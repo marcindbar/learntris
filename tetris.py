@@ -3,9 +3,8 @@
 
 
 class Cell(object):
-
-    def __init__(self, row, col):
-        self.cell = '.'
+    def __init__(self, row, col, char='.'):
+        self.cell = char
         self.row = row
         self.col = col
 
@@ -17,36 +16,46 @@ class Cell(object):
 
 
 class Matrix(object):
-    def __init__(self):
-        self.matrix = [[Cell(row, col) for col in range(10)] for row in range(22)]
-
-    def set_matrix_cell(self, row, col, char):
-        self.matrix[row][col].set_cell(char)
+    def __init__(self, cols=10, rows=22):
+        self.cols = cols
+        self.rows = rows
+        self.matrix = [[Cell(row, col) for col in range(cols)] for row in range(rows)]
 
     def get_string_matrix(self):
-        return ''.join([' '.join([elem.get_cell_char() for elem in item]) + '\n' for item in self.matrix])
+        row_table = [elem.get_cell_char() for elem in item]
+        return ''.join([' '.join(row_table) + '\n' for item in self.matrix])
 
-    def set_matrix(self, file_name):
+    def set_matrix(self, input_file_name):
         try:
-            with open(file_name) as fh:
+            with open(input_file_name) as fh:
                 for row_nr, row in enumerate(fh):
                     for col_nr in range(0, len(row) - 1, 2):
                         if row[col_nr] != ' ':
-                            self.matrix[row_nr][col_nr // 2].set_cell(row[col_nr])
+                            self.matrix[row_nr][col_nr//2].set_cell(row[col_nr])
         except EnvironmentError as err:
             print(err)
 
+    def clear_matrix(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                self.matrix[row][col].set_cell('.')
+
 
 if __name__ == "__main__":
+
+    m = Matrix()
     answer = input()
 
     # test 2
     if answer == 'p':
-        m2 = Matrix()
-        print(m2.get_string_matrix())
+        print(m.get_string_matrix())
 
     # test 3
     if answer == 'g':
-        m3 = Matrix()
-        m3.set_matrix('input_test3.txt')
-        print(m3.get_string_matrix())
+        m.set_matrix('input_test3.txt')
+        print(m.get_string_matrix())
+
+    # test 4
+    if answer == 'c':
+        m.clear_matrix()
+        print(m.get_string_matrix())
