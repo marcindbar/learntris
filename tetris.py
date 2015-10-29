@@ -22,7 +22,7 @@ class Matrix(object):
         self.matrix = [[Cell(row, col) for col in range(cols)] for row in range(rows)]
 
     def get_string_matrix(self):
-        return ''.join([' '.join([elem.get_cell_char() for elem in item]) + '\n' for item in self.matrix])
+        return '\n'.join([' '.join([elem.get_cell_char() for elem in item]) for item in self.matrix])
 
     def set_matrix(self, input_file_name):
         try:
@@ -44,17 +44,19 @@ if __name__ == "__main__":
 
     m = Matrix()
     answer = input()
+    while answer != 'q':
+        # test 2
+        if answer == 'p':
+            print(m.get_string_matrix())
 
-    # test 2
-    if answer == 'p':
-        print(m.get_string_matrix())
+        # test 3
+        if answer == 'g':
+            m.set_matrix('input_test3.txt')
+            m.get_string_matrix()
 
-    # test 3
-    if answer == 'g':
-        m.set_matrix('input_test3.txt')
-        print(m.get_string_matrix())
+        # test 4
+        if answer == 'c':
+            m.clear_matrix()
+            m.get_string_matrix()
 
-    # test 4
-    if answer == 'c':
-        m.clear_matrix()
-        print(m.get_string_matrix())
+        answer = input()
