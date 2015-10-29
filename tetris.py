@@ -22,8 +22,7 @@ class Matrix(object):
         self.matrix = [[Cell(row, col) for col in range(cols)] for row in range(rows)]
 
     def get_string_matrix(self):
-        row_table = [elem.get_cell_char() for elem in item]
-        return ''.join([' '.join(row_table) + '\n' for item in self.matrix])
+        return ''.join([' '.join([elem.get_cell_char() for elem in item]) + '\n' for item in self.matrix])
 
     def set_matrix(self, input_file_name):
         try:
