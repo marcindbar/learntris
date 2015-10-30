@@ -3,10 +3,8 @@
 
 
 class Cell(object):
-    def __init__(self, row, col, char='.'):
+    def __init__(self, char='.'):
         self.cell = char
-        self.row = row
-        self.col = col
 
     def get_cell_char(self):
         return self.cell
@@ -19,7 +17,7 @@ class Matrix(object):
     def __init__(self, cols=10, rows=22):
         self.cols = cols
         self.rows = rows
-        self.matrix = [[Cell(row, col) for col in range(cols)] for row in range(rows)]
+        self.matrix = [[Cell() for col in range(cols)] for row in range(rows)]
 
     def get_string_matrix(self):
         return '\n'.join([' '.join([elem.get_cell_char() for elem in item]) for item in self.matrix])
@@ -40,9 +38,21 @@ class Matrix(object):
                 self.matrix[row][col].set_cell('.')
 
 
-if __name__ == "__main__":
+class Game(object):
+    def __init__(self):
+        self.score = 0
+        self.matrix = Matrix()
 
-    m = Matrix()
+    def get_score(self):
+        return self.score
+
+    def get_matrix(self):
+        return self.matrix
+
+if __name__ == "__main__":
+    g = Game()
+    m = g.get_matrix()
+
     answer = input()
     while answer != 'q':
         # test 2
@@ -58,5 +68,10 @@ if __name__ == "__main__":
         if answer == 'c':
             m.clear_matrix()
             m.get_string_matrix()
+
+        # test 5
+        if answer == '?s':
+            print(g.get_score())
+
 
         answer = input()
