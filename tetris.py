@@ -41,10 +41,14 @@ class Matrix(object):
 class Game(object):
     def __init__(self):
         self.score = 0
+        self.cleard_lines = 0
         self.matrix = Matrix()
 
     def get_score(self):
         return self.score
+
+    def get_cleard_lines(self):
+        return self.cleard_lines
 
     def get_matrix(self):
         return self.matrix
@@ -62,16 +66,17 @@ if __name__ == "__main__":
         # test 3
         if answer == 'g':
             m.set_matrix('input_test3.txt')
-            m.get_string_matrix()
 
         # test 4
         if answer == 'c':
             m.clear_matrix()
-            m.get_string_matrix()
 
         # test 5
         if answer == '?s':
             print(g.get_score())
 
+        # test 6
+        if answer == '?n':
+            print(g.get_cleard_lines())
 
         answer = input()
