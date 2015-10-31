@@ -37,39 +37,56 @@ class Matrix(object):
             for col in range(self.cols):
                 self.matrix[row][col].set_cell('.')
 
+    def is_row_full(self, row):
+        for cell in row:
+            if cell.get_cell_char() == '.':
+                return False
+        return True
+
+    def clear_row(self, row):
+        for cell in row:
+            cell.set_cell('.')
+
 
 class Game(object):
     def __init__(self):
         self.score = 0
-        self.cleard_lines = 0
-        self.matrix = Matrix()
+        self.cleared_lines = 0
+        self.grid = Matrix()
+
+    def get_grid(self):
+        return self.grid
 
     def get_score(self):
         return self.score
 
-    def get_cleard_lines(self):
-        return self.cleard_lines
+    def update_score(self):
+        self.score += 100
 
-    def get_matrix(self):
-        return self.matrix
+    def get_cleared_lines(self):
+        return self.cleared_lines
+
+    def update_cleared_lines(self):
+        self.cleared_lines += 1
+
 
 if __name__ == "__main__":
     g = Game()
-    m = g.get_matrix()
+    grid = g.get_grid()
 
     answer = input()
     while answer != 'q':
         # test 2
         if answer == 'p':
-            print(m.get_string_matrix())
+            print(grid.get_string_matrix())
 
         # test 3
         if answer == 'g':
-            m.set_matrix('input_test3.txt')
+            grid.set_matrix('input_test3.txt')
 
         # test 4
         if answer == 'c':
-            m.clear_matrix()
+            grid.clear_matrix()
 
         # test 5
         if answer == '?s':
@@ -77,6 +94,16 @@ if __name__ == "__main__":
 
         # test 6
         if answer == '?n':
-            print(g.get_cleard_lines())
+            print(g.get_cleared_lines())
+
+        # test 7
+        if answer == 's':
+            grid.set_matrix('input_test7.txt')
+            for row in grid.matrix:
+                if grid.is_row_full(row):
+                    grid.clear_row(row)
+                    g.update_cleared_lines()
+                    g.update_score()
+
 
         answer = input()
