@@ -20,7 +20,7 @@ class Matrix(object):
         self.matrix = [[Cell() for col in range(cols)] for row in range(rows)]
 
     def get_string_matrix(self):
-        return '\n'.join([' '.join([elem.get_cell_char() for elem in item]) for item in self.matrix])
+        return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.matrix])
 
     def set_matrix(self, input_file_name):
         try:
@@ -48,11 +48,22 @@ class Matrix(object):
             cell.set_cell('.')
 
 
+class Tetramino(object):
+    def __init__(self, name, body):
+        self.name = name
+        self.grid = [[Cell(char) for char in row] for row in body]
+
+    def get_string_grid(self):
+        return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.grid])
+
+
 class Game(object):
     def __init__(self):
         self.score = 0
         self.cleared_lines = 0
         self.grid = Matrix()
+        self.active_tetramino = ''
+        self.available_tetraminos = {}
 
     def get_grid(self):
         return self.grid
@@ -69,10 +80,23 @@ class Game(object):
     def update_cleared_lines(self):
         self.cleared_lines += 1
 
+    def load_tetraminos(self, input_file_name):
+        try:
+            with open(input_file_name) as fh:
+                for item in fh.read().split('#\n'):
+                    (grid, name) = item.split('\n@')
+                    body = [row.split(' ') for row in grid.split('\n')]
+                    tetramino = Tetramino(name, body)
+                    self.available_tetraminos.update({name.rstrip(): tetramino})
+        except:
+            print("Unexpected error.")
+
+    def set_active_tetramino(self, active_item):
+        self.active_tetramino = active_item
 
 if __name__ == "__main__":
-    g = Game()
-    grid = g.get_grid()
+    game = Game()
+    grid = game.get_grid()
 
     answer = input()
     while answer != 'q':
@@ -90,11 +114,11 @@ if __name__ == "__main__":
 
         # test 5
         if answer == '?s':
-            print(g.get_score())
+            print(game.get_score())
 
         # test 6
         if answer == '?n':
-            print(g.get_cleared_lines())
+            print(game.get_cleared_lines())
 
         # test 7
         if answer == 's':
@@ -102,8 +126,13 @@ if __name__ == "__main__":
             for row in grid.matrix:
                 if grid.is_row_full(row):
                     grid.clear_row(row)
-                    g.update_cleared_lines()
-                    g.update_score()
+                    game.update_cleared_lines()
+                    game.update_score()
 
+        # test 8
+        if answer == 't':
+            game.load_tetraminos('tetraminos.txt')
+            game.set_active_tetramino('I')
+            print(game.available_tetraminos['I'].get_string_grid())
 
         answer = input()
