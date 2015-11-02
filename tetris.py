@@ -25,10 +25,10 @@ class Matrix(object):
     def set_matrix(self, input_file_name):
         try:
             with open(input_file_name) as fh:
-                for row_nr, row in enumerate(fh):
-                    for col_nr in range(0, len(row) - 1, 2):
-                        if row[col_nr] != ' ':
-                            self.matrix[row_nr][col_nr//2].set_cell(row[col_nr])
+                body = [item.split(' ') for item in fh.read().splitlines()]
+                for row_nr, row in enumerate(self.matrix):
+                    for cell_nr, cell in enumerate(row):
+                        cell.set_cell(body[row_nr][cell_nr])
         except EnvironmentError as err:
             print(err)
 
