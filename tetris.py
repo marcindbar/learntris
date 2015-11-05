@@ -22,15 +22,11 @@ class Matrix(object):
     def get_string_matrix(self):
         return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.matrix])
 
-    def set_matrix(self, input_file_name):
-        try:
-            with open(input_file_name) as fh:
-                body = [item.split(' ') for item in fh.read().splitlines()]
-                for row_nr, row in enumerate(self.matrix):
-                    for cell_nr, cell in enumerate(row):
-                        cell.set_cell(body[row_nr][cell_nr])
-        except EnvironmentError as err:
-            print(err)
+    def set_matrix(self, rows=22):
+        body = [item.split(' ') for item in [input() for dummy in range(rows)]]
+        for row_nr, row in enumerate(self.matrix):
+            for cell_nr, cell in enumerate(row):
+                cell.set_cell(body[row_nr][cell_nr])
 
     def clear_matrix(self):
         for row in range(self.rows):
@@ -97,6 +93,9 @@ class Game(object):
 if __name__ == "__main__":
     game = Game()
     grid = game.get_grid()
+    game.load_tetraminos('tetraminos.txt')
+
+    counter = 0
 
     answer = input()
     while answer != 'q':
@@ -106,7 +105,7 @@ if __name__ == "__main__":
 
         # test 3
         if answer == 'g':
-            grid.set_matrix('input_test3.txt')
+            grid.set_matrix()
 
         # test 4
         if answer == 'c':
@@ -122,17 +121,20 @@ if __name__ == "__main__":
 
         # test 7
         if answer == 's':
-            grid.set_matrix('input_test7.txt')
             for row in grid.matrix:
                 if grid.is_row_full(row):
                     grid.clear_row(row)
                     game.update_cleared_lines()
                     game.update_score()
 
-        # test 8
+        # test 8 & 9
         if answer == 't':
-            game.load_tetraminos('tetraminos.txt')
-            game.set_active_tetramino('I')
-            print(game.available_tetraminos['I'].get_string_grid())
+            if counter == 0:
+                game.set_active_tetramino('I')
+            else:
+                game.set_active_tetramino('O')
+            print(game.available_tetraminos[game.active_tetramino].get_string_grid())
+            counter += 1
+
 
         answer = input()
