@@ -19,7 +19,7 @@ class Matrix(object):
         self.rows = rows
         self.matrix = [[Cell() for col in range(cols)] for row in range(rows)]
 
-    def get_string_matrix(self):
+    def get_str_matrix(self):
         return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.matrix])
 
     def set_matrix(self, rows=22):
@@ -49,7 +49,7 @@ class Tetramino(object):
         self.name = name
         self.grid = [[Cell(char) for char in row] for row in body]
 
-    def get_string_grid(self):
+    def get_str_grid(self):
         return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.grid])
 
 
@@ -60,6 +60,10 @@ class Game(object):
         self.grid = Matrix()
         self.active_tetramino = ''
         self.available_tetraminos = {}
+        self.queued_answers = ''
+        self.counter_queue = 0
+        self.commends = ('q','p','g','c','?s','?n','s','t','I','Z','O','J','S','L','T')
+
 
     def get_grid(self):
         return self.grid
@@ -90,51 +94,80 @@ class Game(object):
     def set_active_tetramino(self, active_item):
         self.active_tetramino = active_item
 
+    def get_command(self):
+        if self.counter_queue < 1:
+            answer = input()
+            if answer == '':
+                return answer
+            new_answer = ''.join([item for item in answer.split(' ') if item in self.commends])
+            self.counter_queue += len(new_answer)
+            self.queued_answers += new_answer
+
+        if self.queued_answers[0] == '?':
+            answer = self.queued_answers[0:2]
+            self.queued_answers = self.queued_answers[2:]
+            self.counter_queue -= 2
+        else:
+            answer = self.queued_answers[0]
+            self.queued_answers = self.queued_answers[1:]
+            self.counter_queue -= 1
+
+        return answer
+
+
+
+
 if __name__ == "__main__":
-    game = Game()
-    grid = game.get_grid()
-    game.load_tetraminos('tetraminos.txt')
+    g = Game()
+    grid = g.get_grid()
 
-    counter = 0
+    g.load_tetraminos('tetraminos.txt')
 
-    answer = input()
-    while answer != 'q':
+    while True:
+        command = g.get_command()
+
+        # test 1
+        if command == 'q':
+            break
+
         # test 2
-        if answer == 'p':
-            print(grid.get_string_matrix())
+        if command == 'p':
+            print(grid.get_str_matrix())
 
         # test 3
-        if answer == 'g':
+        if command == 'g':
             grid.set_matrix()
 
         # test 4
-        if answer == 'c':
+        if command == 'c':
             grid.clear_matrix()
 
         # test 5
-        if answer == '?s':
-            print(game.get_score())
+        if command == '?s':
+            print(g.get_score())
 
         # test 6
-        if answer == '?n':
-            print(game.get_cleared_lines())
+        if command == '?n':
+            print(g.get_cleared_lines())
 
         # test 7
-        if answer == 's':
+        if command == 's':
             for row in grid.matrix:
                 if grid.is_row_full(row):
                     grid.clear_row(row)
-                    game.update_cleared_lines()
-                    game.update_score()
+                    g.update_cleared_lines()
+                    g.update_score()
 
-        # test 8 & 9
-        if answer == 't':
-            if counter == 0:
-                game.set_active_tetramino('I')
-            else:
-                game.set_active_tetramino('O')
-            print(game.available_tetraminos[game.active_tetramino].get_string_grid())
-            counter += 1
+        # test 8 - 14
+        if command in g.available_tetraminos.keys():
+            try:
+                g.set_active_tetramino(command)
+            except KeyError as err:
+                print(err)
 
-
-        answer = input()
+        if command == 't':
+            try:
+                print(g.available_tetraminos[g.active_tetramino].get_str_grid())
+            except:
+                print("No tetramino is available")
+                continue

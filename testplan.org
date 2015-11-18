@@ -702,7 +702,7 @@ m m .
 . . . . . . . . . . # 21
 = Spawn location for J
 : Here's the spawn location for J.
-: 
+:
 : Notice that there are no spaces between the commands
 : this time. We said earlier that commands may be separated
 : by spaces or newlines, but we never said they *had* to be.
@@ -1173,7 +1173,7 @@ M M M . . . . . . . #  1
 = Rotate and Hard drop.
 : Aside from demonstrating the astonishing grace
 : and agility of your average tetramino as it plunges
-: sideways to its doom, this test double checks that 
+: sideways to its doom, this test double checks that
 : your collision detection holds up under rotation.
 #+end_src
 
@@ -1345,7 +1345,7 @@ Press start button to begin.
 : It should show up when you first turn on the game, but for
 : the tests, they're fine as long as there's some way to get
 : to it.
-: 
+:
 : Here's what we came up with: the '@' command takes you to
 : the title screen, where the 'p' command prints out the main
 : menu. Then '!' to simulate the start button should take you
@@ -1409,7 +1409,7 @@ Press start button to continue.
 . . . . . . . . . . # 21
 = The Pause Menu
 : Wow, that title screen you whipped up was a huge hit upstairs.
-: They loved pressing that start button, and they want to show 
+: They loved pressing that start button, and they want to show
 : it off in the brochures. So now they're asking for a pause
 : screen that pops up when the '!' command gets issued in-game.
 : Sending '!' again should unpause.
@@ -1443,7 +1443,7 @@ Press start button to continue.
 . . . . . . c . . . # 21
 Game Over
 = The Game Over Screen
-: The T tetramino couldn't escape the top 2 tetramino 
+: The T tetramino couldn't escape the top 2 tetramino
 : spawning rows. Your game is over!
 #+end_src
 
@@ -1509,4 +1509,3 @@ Here is the test format (remove the leading ':  ' from each line, and also the c
 - [ ] Rules for when a tetramino becomes part of the matrix.
 
 ... Or come up with your own rules and make the game your own. :)
-

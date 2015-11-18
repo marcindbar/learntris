@@ -5,4 +5,24 @@ c c c c
 @I#
 y y
 y y
-@O
+@O#
+r r .
+. r r
+. . .
+@Z#
+. g g
+g g .
+. . .
+@S#
+b . .
+b b b
+. . .
+@J#
+. . o
+o o o
+. . .
+@L#
+. m .
+m m m
+. . .
+@T
