@@ -1,4 +1,4 @@
-from task_functions import *
+from task import *
 
 execute = dict({'q':quit_game, 'p':print_game_grid, 'g':set_game_grid,
                 'c':clean_game_grid, '?s':print_game_score,

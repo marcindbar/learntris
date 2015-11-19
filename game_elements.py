@@ -1,4 +1,4 @@
-from commands_dict import execute
+from commands import execute
 
 class Cell(object):
     def __init__(self, char='.'):

@@ -9,7 +9,7 @@ task_functions.py
 tetraminos.txt
 '''
 
-from commands_dict import execute
+from commands import execute
 from game_elements import Cell, Matrix, Tetramino, Game
 
 
