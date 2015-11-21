@@ -47,3 +47,7 @@ def print_active_tetramino(game):
 # test 15-17
 def rotate_tetramino_clockwise(game):
     game.available_tetraminos[game.active_tetramino].clockwise()
+
+# test 18-21
+def print_newline(game):
+    print()
