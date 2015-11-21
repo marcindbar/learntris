@@ -43,3 +43,7 @@ def print_active_tetramino(game):
         print(game.available_tetraminos[game.active_tetramino].get_str_grid())
     except:
         print("No tetramino is available")
+
+# test 15-17
+def rotate_tetramino_clockwise(game):
+    game.available_tetraminos[game.active_tetramino].clockwise()

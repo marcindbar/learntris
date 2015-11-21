@@ -49,6 +49,9 @@ class Tetramino(object):
 
     def get_str_grid(self):
         return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.grid])
+            
+    def clockwise(self):
+        self.grid = [item for item in zip(*self.grid[::-1])]
 
 
 class Game(object):
