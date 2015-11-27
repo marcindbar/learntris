@@ -26,6 +26,11 @@ class Matrix(object):
             for cell_nr, cell in enumerate(row):
                 cell.set_cell(body[row_nr][cell_nr])
 
+    def set_beginning(self, new_beginning, len_beginning=2):
+        if len(new_beginning) == len_beginning:
+            for item in range(len_beginning):
+                self.matrix[0:len_beginning][item][4:6] = new_beginning.grid[item]
+
     def clear_matrix(self):
         for row in range(self.rows):
             for col in range(self.cols):
@@ -49,12 +54,16 @@ class Tetramino(object):
 
     def get_str_grid(self):
         return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.grid])
-            
+
     def clockwise(self):
         self.grid = [item for item in zip(*self.grid[::-1])]
 
+    def __len__(self):
+        return len(self.grid)
+
 
 class Game(object):
+
     def __init__(self):
         self.score = 0
         self.cleared_lines = 0

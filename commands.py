@@ -7,4 +7,4 @@ execute = dict({'q':quit_game, 'p':print_game_grid, 'g':set_game_grid,
                 'O':activate_tetramino,'J':activate_tetramino,
                 'S':activate_tetramino,'L':activate_tetramino,
                 'T':activate_tetramino,'t':print_active_tetramino,
-                ')':rotate_tetramino_clockwise,';':print_newline})
+                ')':rotate_tetramino_clockwise,';':print_newline,})
