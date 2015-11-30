@@ -16,6 +16,9 @@ class Matrix(object):
         self.cols = cols
         self.rows = rows
         self.matrix = [[Cell() for col in range(cols)] for row in range(rows)]
+        self.active_tetramino = ''
+        self.available_tetraminos = {}
+        self.load_tetraminos('tetraminos.txt')
 
     def get_str_matrix(self):
         return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.matrix])
@@ -25,11 +28,6 @@ class Matrix(object):
         for row_nr, row in enumerate(self.matrix):
             for cell_nr, cell in enumerate(row):
                 cell.set_cell(body[row_nr][cell_nr])
-
-    def set_beginning(self, new_beginning, len_beginning=2):
-        if len(new_beginning) == len_beginning:
-            for item in range(len_beginning):
-                self.matrix[0:len_beginning][item][4:6] = new_beginning.grid[item]
 
     def clear_matrix(self):
         for row in range(self.rows):
@@ -45,6 +43,32 @@ class Matrix(object):
     def clear_row(self, row):
         for cell in row:
             cell.set_cell('.')
+
+    def set_active_tetramino(self, active_item):
+        self.active_tetramino = active_item
+
+    def load_tetraminos(self, input_file_name):
+        try:
+            with open(input_file_name) as fh:
+                for item in fh.read().split('#\n'):
+                    (grid, name) = item.split('\n@')
+                    body = [row.split(' ') for row in grid.split('\n')]
+                    tetramino = Tetramino(name, body)
+                    self.available_tetraminos.update({name.rstrip(): tetramino})
+        except:
+            print("Sorry, tetraminos are not loaded!")
+
+    def set_status(self):
+        tetra = self.available_tetraminos[self.active_tetramino]
+        for row in tetra.grid:
+            for cell in row:
+                cell.set_cell(cell.get_cell_char().upper())
+        tetra_width = len(tetra)
+        grid_width = len(self.matrix[0])
+        col = (grid_width - tetra_width) // 2
+        row = 0
+        for ind in range(tetra_width):
+            self.matrix[row:row+tetra_width][ind][col:col+tetra_width] = tetra.grid[ind]
 
 
 class Tetramino(object):
@@ -68,8 +92,6 @@ class Game(object):
         self.score = 0
         self.cleared_lines = 0
         self.grid = Matrix()
-        self.active_tetramino = ''
-        self.available_tetraminos = {}
         self.queued_answers = ''
         self.counter_queue = 0
         self.next_command = ''
@@ -90,20 +112,6 @@ class Game(object):
     def update_cleared_lines(self):
         self.cleared_lines += 1
 
-    def load_tetraminos(self, input_file_name):
-        try:
-            with open(input_file_name) as fh:
-                for item in fh.read().split('#\n'):
-                    (grid, name) = item.split('\n@')
-                    body = [row.split(' ') for row in grid.split('\n')]
-                    tetramino = Tetramino(name, body)
-                    self.available_tetraminos.update({name.rstrip(): tetramino})
-        except:
-            print("Unexpected error.")
-
-    def set_active_tetramino(self, active_item):
-        self.active_tetramino = active_item
-
     def set_next_command(self):
         if self.counter_queue < 1:
             answer = input()
@@ -123,3 +131,6 @@ class Game(object):
                 self.queued_answers = self.queued_answers[1:]
                 self.counter_queue -= 1
         self.next_command = answer
+
+    def set_grid_status(self):
+        self.grid.set_status()

@@ -33,21 +33,26 @@ def update_score_table(game):
 # test 8-14 part1
 def activate_tetramino(game):
     try:
-        game.set_active_tetramino(game.next_command)
+        game.grid.set_active_tetramino(game.next_command)
     except KeyError as err:
         print(err)
 
 # test 8-14 part2
 def print_active_tetramino(game):
     try:
-        print(game.available_tetraminos[game.active_tetramino].get_str_grid())
+        print(game.grid.available_tetraminos[game.grid.active_tetramino].get_str_grid())
     except:
         print("No tetramino is available")
 
 # test 15-17
 def rotate_tetramino_clockwise(game):
-    game.available_tetraminos[game.active_tetramino].clockwise()
+    game.grid.available_tetraminos[game.grid.active_tetramino].clockwise()
 
 # test 18-21
 def print_newline(game):
     print()
+
+# test 22-23
+def print_game_status(game):
+    game.set_grid_status()
+    print(game.get_grid().get_str_matrix())

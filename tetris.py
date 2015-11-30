@@ -15,7 +15,6 @@ from game_elements import Cell, Matrix, Tetramino, Game
 
 if __name__ == "__main__":
     game = Game()
-    game.load_tetraminos('tetraminos.txt')
 
     while True:
         try:
