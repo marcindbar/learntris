@@ -12,6 +12,7 @@ class Cell(object):
 
 
 class Matrix(object):
+
     def __init__(self, cols=10, rows=22):
         self.cols = cols
         self.rows = rows
@@ -19,6 +20,7 @@ class Matrix(object):
         self.active_tetramino = ''
         self.available_tetraminos = {}
         self.load_tetraminos('tetraminos.txt')
+        self.coor = {'x_axis':0, 'y_axis':0}
 
     def get_str_matrix(self):
         return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.matrix])
@@ -46,6 +48,8 @@ class Matrix(object):
 
     def set_active_tetramino(self, active_item):
         self.active_tetramino = active_item
+        x = (self.cols-len(self.available_tetraminos[self.active_tetramino]))//2
+        self.coor = {'x_axis':x, 'y_axis':0}
 
     def load_tetraminos(self, input_file_name):
         try:
@@ -63,12 +67,10 @@ class Matrix(object):
         for row in tetra.grid:
             for cell in row:
                 cell.set_cell(cell.get_cell_char().upper())
-        tetra_width = len(tetra)
-        grid_width = len(self.matrix[0])
-        col = (grid_width - tetra_width) // 2
-        row = 0
-        for ind in range(tetra_width):
-            self.matrix[row:row+tetra_width][ind][col:col+tetra_width] = tetra.grid[ind]
+        x, y = self.coor['x_axis'], self.coor['y_axis']
+
+        for ind in range(len(tetra)):
+            self.matrix[y:y+len(tetra)][ind][x:x+len(tetra)] = tetra.grid[ind]
 
 
 class Tetramino(object):
@@ -115,22 +117,28 @@ class Game(object):
     def set_next_command(self):
         if self.counter_queue < 1:
             answer = input()
-            if answer == '':
-                return answer
-            new_answer = ''.join([item for item in answer.split(' ') if item in self.all_commands])
-            self.counter_queue += len(new_answer)
-            self.queued_answers += new_answer
+            if ' ' in answer:
+                new_answer = ''.join([item for item in answer.split(' ')])
+                self.counter_queue += len(new_answer)
+                self.queued_answers += new_answer
+            else:
+                self.counter_queue += len(answer)
+                self.queued_answers += answer
 
-        if self.queued_answers:
-            if self.queued_answers[0] == '?':
-                answer = self.queued_answers[0:2]
+        if self.queued_answers[0] == '?':
+            answer = self.queued_answers[0:2]
+            if answer in self.all_commands:
                 self.queued_answers = self.queued_answers[2:]
                 self.counter_queue -= 2
-            else:
+                self.next_command = answer
+        else:
+            if self.queued_answers[0] in self.all_commands:
                 answer = self.queued_answers[0]
-                self.queued_answers = self.queued_answers[1:]
-                self.counter_queue -= 1
-        self.next_command = answer
+                self.next_command = answer
+            self.queued_answers = self.queued_answers[1:]
+            self.counter_queue -= 1
+
+
 
     def set_grid_status(self):
         self.grid.set_status()

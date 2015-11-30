@@ -56,3 +56,13 @@ def print_newline(game):
 def print_game_status(game):
     game.set_grid_status()
     print(game.get_grid().get_str_matrix())
+
+# test 24-29
+def move_left(game):
+    if game.grid.coor['x_axis'] > 0:
+        game.grid.coor['x_axis'] -= 1
+
+# test 30
+def move_right(game):
+    if game.grid.coor['x_axis'] < game.grid.cols:
+        game.grid.coor['_axis'] += 1
