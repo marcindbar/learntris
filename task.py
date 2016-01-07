@@ -41,13 +41,15 @@ def activate_tetramino(game):
 # test 8-14 part2
 def print_active_tetramino(game):
     try:
-        print(game.grid.available_tetraminos[game.grid.active_tetramino].get_str_grid())
+        #print(game.grid.available_tetraminos[game.grid.active_tetramino].get_str_grid())
+        print(game.grid.active.get_str_grid())
     except:
         print("No tetramino is available")
 
 # test 15-17
 def rotate_tetramino_clockwise(game):
-    game.grid.available_tetraminos[game.grid.active_tetramino].clockwise()
+    #game.grid.available_tetraminos[game.grid.active_tetramino].clockwise()
+    game.grid.active.clockwise()
 
 # test 18-21
 def print_newline(game):
@@ -65,8 +67,8 @@ def print_game_status(game):
 #         game.grid.coor['x_axis'] -= 1
 
 def move_left(game):
-
-    tetra = game.grid.available_tetraminos[game.grid.active_tetramino]
+    #tetra = game.grid.available_tetraminos[game.grid.active_tetramino]
+    tetra = game.grid.active
     game.grid.clear_tetramino()
     if game.grid.coor['x_axis'] > 0:
         if not game.grid.check_collisions(game.grid.coor['x_axis'] - 1, game.grid.coor['y_axis']):
@@ -96,7 +98,8 @@ def move_left(game):
 #         tetra.shift_right()
 
 def move_right(game):
-    tetra = game.grid.available_tetraminos[game.grid.active_tetramino]
+    #tetra = game.grid.available_tetraminos[game.grid.active_tetramino]
+    tetra = game.grid.active
     game.grid.clear_tetramino()
     if game.grid.coor['x_axis'] < game.grid.cols - tetra.get_width():
         if not game.grid.check_collisions(1 + game.grid.coor['x_axis'], game.grid.coor['y_axis']):
@@ -107,7 +110,8 @@ def move_right(game):
 
 # test 34
 def rotate_tetramino_anticlockwise(game):
-    game.grid.available_tetraminos[game.grid.active_tetramino].anticlockwise()
+    #game.grid.available_tetraminos[game.grid.active_tetramino].anticlockwise()
+    game.grid.active.anticlockwise()
 
 # test 35
 # def move_down(game):
@@ -151,7 +155,8 @@ def rotate_tetramino_anticlockwise(game):
 #     return False
 
 def move_down(game):
-    tetra = game.grid.available_tetraminos[game.grid.active_tetramino]
+    #tetra = game.grid.available_tetraminos[game.grid.active_tetramino]
+    tetra = game.grid.active
     game.grid.clear_tetramino()
     if game.grid.coor['y_axis'] < game.grid.rows - tetra.get_hight():
         if game.grid.check_collisions(game.grid.coor['x_axis'], 1+game.grid.coor['y_axis']):
@@ -169,6 +174,9 @@ def move_down(game):
             #game.grid.coor['y_axis'] -= 1 # must be here
             #tetra.shift_down()
             return True
+    else:
+        game.get_grid().settle_tetramino()
+
 
 # test 36-38
 # def move_to_floor(game):
@@ -184,7 +192,8 @@ def move_down(game):
 #     game.get_grid().settle_tetramino()
 
 def move_to_floor(game):
-    tetra = game.grid.available_tetraminos[game.grid.active_tetramino]
+    #tetra = game.grid.available_tetraminos[game.grid.active_tetramino]
+    tetra = game.grid.active
     tetra.shift_down()
     game.grid.clear_tetramino()
     for item in range(game.grid.rows - tetra.get_hight() + 1):

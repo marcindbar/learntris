@@ -21,6 +21,7 @@ class Matrix(object):
         else:
             self.matrix = [[Cell(col.get_cell_char()) for col in row] for row in body]
         self.active_tetramino = ''
+        self.active = None
         self.available_tetraminos = {}
         self.load_tetraminos('tetraminos.txt')
         self.coor = {'x_axis':0, 'y_axis':0}
@@ -49,10 +50,18 @@ class Matrix(object):
         for cell in row:
             cell.set_cell('.')
 
+    def copy_tetramino(self, name):
+        old = self.available_tetraminos[name]
+        tet = Tetramino(name, old.get_body())
+        self.active = tet
+        return self.active
+
     def set_active_tetramino(self, active_item):
         self.active_tetramino = active_item
         x = (self.cols-self.available_tetraminos[self.active_tetramino].get_width())//2
+        #x = (self.cols-self.active.get_width())//2
         self.coor = {'x_axis':x, 'y_axis':0}
+        self.copy_tetramino(active_item)
 
     def load_tetraminos(self, input_file_name):
         try:
@@ -93,7 +102,8 @@ class Matrix(object):
 
     def settle_tetramino(self):
         if self.active_tetramino != '':
-            tetra = self.available_tetraminos[self.active_tetramino]
+            #tetra = self.available_tetraminos[self.active_tetramino]
+            tetra = self.active
             # for row in tetra.grid:
             #     for cell in row:
             #         cell.set_cell(cell.get_cell_char().upper())
@@ -115,7 +125,8 @@ class Matrix(object):
     #         self.matrix[y:y+dy][ind][x:x+dx] = [Cell() for col in range(dy)]
 
     def clear_tetramino(self):
-        tetra = self.available_tetraminos[self.active_tetramino]
+        #tetra = self.available_tetraminos[self.active_tetramino]
+        tetra = self.active
         x, y = self.coor['x_axis'], self.coor['y_axis']
         dx, dy = tetra.get_hight(), tetra.get_width()
 
@@ -132,7 +143,8 @@ class Matrix(object):
     #                 return True
     #     return False
     def check_collisions(self, x, y):
-        tetra = self.available_tetraminos[self.active_tetramino]
+        #tetra = self.available_tetraminos[self.active_tetramino]
+        tetra = self.active
         for y_pos in range(tetra.get_hight()):
             for x_pos in range(tetra.get_width()):
                 if tetra.grid[y_pos][x_pos].get_cell_char() != '.' and self.matrix[y+y_pos][x+x_pos].get_cell_char() != '.':
@@ -143,6 +155,11 @@ class Tetramino(object):
     def __init__(self, name, body):
         self.name = name
         self.grid = [[Cell(char) for char in row] for row in body]
+        #self.body = [[char for char in row] for row in body]
+        self.body = body
+
+    def get_body(self):
+        return self.body
 
     def get_str_grid(self):
         return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.grid])
@@ -245,7 +262,8 @@ class Game(object):
     def get_grid_with_tetramino(self):
         if self.grid.active_tetramino != '':
             new_matrix = Matrix(self.grid.matrix)
-            tetra = self.grid.available_tetraminos[self.grid.active_tetramino]
+            #tetra = self.grid.available_tetraminos[self.grid.active_tetramino]
+            tetra = self.grid.active
             #new_grid = self.matrix[:]
             x, y = self.grid.coor['x_axis'], self.grid.coor['y_axis']
             dx, dy = tetra.get_hight(), tetra.get_width()
