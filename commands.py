@@ -10,4 +10,4 @@ execute = dict({'q':quit_game, 'p':print_game_grid, 'g':set_game_grid,
                 ')':rotate_tetramino_clockwise,';':print_newline,
                 '(':rotate_tetramino_anticlockwise,'P':print_game_status,
                 '<':move_left,'>':move_right,'v':move_down,
-                'V':move_to_floor,})
+                'V':move_to_floor,'@':set_title_screen,'!':set_start_game,})
