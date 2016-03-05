@@ -36,6 +36,6 @@ execute = dict({
     ';': print_newline,
     '?n': print_game_cleand_lines,
     '@': set_title_screen,
-    '!': set_start_game,
+    '!': set_start_or_pause_game,
 
     })

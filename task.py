@@ -7,14 +7,23 @@ def print_game_grid(game):
     if game.app_state == 'game' or game.app_state is None:
         game.get_grid().settle_tetramino()
         print(game.get_grid().get_str_matrix())
+    elif game.app_state == 'pause':
+        print(game.messages['pause'])
     elif game.app_state == 'menu':
-        print(game.title_screen)
+        print(game.messages['title'])
 
 def set_title_screen(game):
     game.app_state = 'menu'
 
-def set_start_game(game):
-    game.app_state = 'game'
+def set_start_or_pause_game(game):
+    if game.app_state == 'pause':
+        game.app_state = 'game'
+    elif game.app_state == 'menu':
+        game.app_state = 'game'
+    elif game.app_state == 'game':
+        game.app_state = 'pause'
+    elif game.app_state is None:
+        game.app_state = 'pause'
 
 # test 3
 def set_game_grid(game):

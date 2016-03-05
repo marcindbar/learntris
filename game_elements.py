@@ -190,6 +190,10 @@ class Tetramino(object):
 
 
 class Game(object):
+    messages = {
+        'title': 'Learntris (c) 1992 Tetraminex, Inc.\nPress start button to begin.',
+        'pause': 'Paused\nPress start button to continue.',
+    }
 
     def __init__(self):
         self.score = 0
@@ -199,7 +203,6 @@ class Game(object):
         self.counter_queue = 0
         self.next_command = ''
         self.all_commands = execute.keys()
-        self.title_screen = 'Learntris (c) 1992 Tetraminex, Inc.\nPress start button to begin.'
         self.app_state = None
 
     def get_grid(self):
