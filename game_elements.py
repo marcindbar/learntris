@@ -27,6 +27,7 @@ class Matrix(object):
         self.available_tetraminos = {}
         self.load_tetraminos('tetraminos.txt')
         self.coor = {'x_axis':0, 'y_axis':0}
+        self.last_collision = False
 
     def get_str_matrix(self):
         return '\n'.join([' '.join([col.get_cell_char() for col in row]) for row in self.matrix])
@@ -42,6 +43,7 @@ class Matrix(object):
             for col in row:
                 col.set_cell('.')
 
+    # todo: take row from object
     def is_row_full(self, row):
         for cell in row:
             if cell.get_cell_char() == '.':
@@ -100,7 +102,10 @@ class Matrix(object):
         tetra = self.active
         for y_pos in range(tetra.get_hight()):
             for x_pos in range(tetra.get_width()):
-                if tetra.grid[y_pos][x_pos].get_cell_char() != '.' and self.matrix[y+y_pos][x+x_pos].get_cell_char() != '.':
+                if tetra.grid[y_pos][x_pos].get_cell_char() != '.' \
+                        and self.matrix[y+y_pos][x+x_pos].get_cell_char() != '.':
+                    if y_pos == 0 or y_pos == 1:
+                        self.last_collision = True
                     return True
         return False
 
@@ -193,6 +198,7 @@ class Game(object):
     messages = {
         'title': 'Learntris (c) 1992 Tetraminex, Inc.\nPress start button to begin.',
         'pause': 'Paused\nPress start button to continue.',
+        'end': 'Game Over',
     }
 
     def __init__(self):

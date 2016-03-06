@@ -74,6 +74,10 @@ def print_newline(game):
 # test 22-23
 def print_game_status(game):
     print(game.get_grid_with_tetramino().get_str_matrix())
+    if game.grid.last_collision:
+        game.app_state = 'end'
+        print(game.messages['end'])
+
 
 # test 24-29, 39
 def move_left(game):
@@ -128,4 +132,11 @@ def move_to_floor(game):
         if not move_down(game):
             break
     game.get_grid().settle_tetramino()
+
+
+def is_game_over(game):
+    if game.grid.last_collision:
+        return True
+    return False
+
 
